@@ -1,9 +1,11 @@
+var youname=prompt("请输入你的群聊昵称","匿名用户");
+var thishost = "ws://" + window.location.host + "/websocket/chat?uname="+youname;
 var MODE_TEXT = 0,
 	MODE_VIDEO = 1,
 	MODE_AUDIO = 2,
 	NO_SOURCE = new Image(),
 	textClient = new WSClient({
-		host: "ws://" + window.location.host + "/websocket/chat",
+		host: thishost,
 		type: MODE_TEXT,
 		onopen: function() {
 			$(".mainedit").ctrlEnter(".submit", function(event) {
@@ -60,7 +62,7 @@ var MODE_TEXT = 0,
 	});
 textClient.addsrcMsg = function(msg) {
 	var console = Console.Win + " .console",
-		obj = '<div class="row"><span class="headpic src" title="' + msg.host + '"></span><i class="src"></i><div class="src"><p></p><br><p class="time">' + new Date().toLocaleString() + '</p></div>';
+		obj = '<div class="row"><span class="headpic src" title="' + msg.host + '"></span>'+msg.host+'<i class="src"></i><div class="src"><p></p><br><p class="time">' + new Date().toLocaleString() + '</p></div>';
 	obj = $(obj);
 	obj.find("p").eq(0).html(msg.msg);
 	obj.fadeIn('slow').appendTo(console);
@@ -68,7 +70,7 @@ textClient.addsrcMsg = function(msg) {
 };
 textClient.adddestMsg = function(msg) {
 	var console = Console.Win + " .console",
-		obj = '<div class="row"><span class="headpic" title="' + msg.host + '"></span><i></i><div class="dest"><p></p><br><p class="time">' + new Date().toLocaleString() + '</p></div>';
+		obj = '<div class="row"><span class="headpic" title="' + msg.host + '"></span>'+msg.host+'<i></i><div class="dest"><p></p><br><p class="time">' + new Date().toLocaleString() + '</p></div>';
 	obj = $(obj);
 	obj.find("p").eq(0).html(msg.msg);
 	obj.fadeIn('slow').appendTo(console);

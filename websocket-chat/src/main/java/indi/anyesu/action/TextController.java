@@ -11,12 +11,17 @@ import javax.websocket.OnError;
 import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
+import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
+
+import cn.hutool.core.lang.Console;
+
 import java.nio.ByteBuffer;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
@@ -35,8 +40,10 @@ public class TextController extends BaseController {
 	@OnOpen
 	public void onOpen(Session session, EndpointConfig config) {
 		// 设置用户信息
-		setUserName(IdGenerator.getNextId());
+		//setUserName(IdGenerator.getNextId());
 		setSession(session);
+		String parameterMap = (String) getParameterMap("uname");
+		setUserName(parameterMap);
 		// 设置聊天室信息
 		if (CONNECTIONS.size() == 0) {
 			setRoomInfo(new RoomInfo(getUserName(), (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")).format(new Date())));

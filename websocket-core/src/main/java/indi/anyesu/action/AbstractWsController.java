@@ -1,6 +1,8 @@
 package indi.anyesu.action;
 
 import com.alibaba.fastjson.JSONObject;
+
+import cn.hutool.core.util.ArrayUtil;
 import indi.anyesu.model.Message;
 import indi.anyesu.model.Message.MsgConstant;
 import indi.anyesu.util.StringUtil;
@@ -11,7 +13,9 @@ import javax.websocket.RemoteEndpoint.Basic;
 import javax.websocket.Session;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Websocket 通讯 抽象类
@@ -159,7 +163,17 @@ public abstract class AbstractWsController {
 			onClose();
 		}
 	}
-
+	
+	protected Object getParameterMap(String key){
+		Map<String, List<String>> parameterMap = session.getRequestParameterMap();
+		List<String> list = parameterMap.get(key);
+		if(list.size()==1){
+			return list.get(0);
+		}else{
+			return ArrayUtil.join(list, ",");
+		}
+	}
+	
 	protected void setSession(Session session) {
 		this.session = session;
 	}
